@@ -12,7 +12,11 @@ BASE_URL = 'https://link.springer.com'
 PDF_CLASS='test-bookpdf-link'
 EBOOK_CLASS='test-bookepub-link'
 
+
 def download_book(url, dirname=DEFAULT_DIR):
+    """
+    Download specific book (PDF or ePub) in *dirname*
+    """
     os.makedirs(dirname, exist_ok=True)
 
     book_url = BASE_URL + url
@@ -33,7 +37,11 @@ def download_book(url, dirname=DEFAULT_DIR):
             book_file.write(chunk)
     
 
-def try_download(soup, booktype='pdf'):
+def get_ebook_url(soup, booktype='pdf'):
+    """
+    Select the link for the booktype (pdf or ebook) and downloads it.
+    """
+
     if booktype == 'pdf':
         klass = PDF_CLASS
     else:
@@ -46,16 +54,23 @@ def try_download(soup, booktype='pdf'):
         ref = downBook[0].get('href')
         download_book(ref)
 
-def download_url(url):
+def parse_page(url):
+    """
+    Searchs for links to download the eBooks (PDF and ePub)
+    """
     doc = requests.get(url)
     doc.raise_for_status()
 
     soup = bs4.BeautifulSoup(doc.text, features="html.parser")
     
-    try_download(soup)
-    try_download(soup, 'ebook')
+    get_ebook_url(soup)
+    get_ebook_url(soup, 'ebook')
 
 def from_list(csv=DEFAULT_CSV):
+    """
+    Reads the list of eBook URLs from CSV file and downloads
+    them all.
+    """
     df = pd.read_csv(csv)
 
     url_size = df['OpenURL'].size
@@ -67,7 +82,7 @@ def from_list(csv=DEFAULT_CSV):
         file_nr += 1
 
         print(f'Downloading file #{file_nr} of {url_size}')
-        download_url(url)
+        parse_page(url)
     
     end = time.perf_counter()
     print(f"downloaded {url_size} files in {end - start} seconds")
