@@ -57,7 +57,7 @@ class Downloader():
             print(f'It seems to be no {booktype} book to download')
         else:
             ref = downBook[0].get('href')
-            download_book(ref)
+            self.download_book(ref)
 
     def parse_page(self, url):
         """
@@ -68,8 +68,8 @@ class Downloader():
 
         soup = bs4.BeautifulSoup(doc.text, features="html.parser")
         
-        get_ebook_url(soup)
-        get_ebook_url(soup, 'ebook')
+        self.get_ebook_url(soup)
+        self.get_ebook_url(soup, 'ebook')
 
     def from_list(self):
         """
@@ -87,7 +87,7 @@ class Downloader():
             file_nr += 1
 
             print(f'Downloading file #{file_nr} of {url_size}')
-            parse_page(url)
+            self.parse_page(url)
         
         end = time.perf_counter()
         print(f"downloaded {url_size} files in {end - start} seconds")
