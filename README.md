@@ -13,10 +13,10 @@ So, here it is.
 ## Preparing the list of books to download
 
 In the springer_free_downloader/lists/ there are some files:
-* list_ebooks.csv: The file that lists all the e-books that you want to download. <=== THIS IS THE ONE YOU NEED TO EDIT.
-* SpringerEbooks.pdf: The original PDF received throught the grups.
-* list_ebooks_all.csv: Extracted from the PDF
-* list_ebooks_all.ods: If you prefer to process in LibreOffice Calc or Excel and export as CSV
+* **list_ebooks.csv**: The file that lists all the e-books that you want to download. <=== _THIS IS THE ONE YOU NEED TO EDIT._
+* *SpringerEbooks.pdf*: The original PDF received throught the grups.
+* *list_ebooks_all.csv*: Extracted from the PDF
+* *list_ebooks_all.ods*: If you prefer to process in LibreOffice Calc or Excel and export as CSV
 
 So, you can copu `list_ebooks_all.csv` to `list_ebooks.csv` and then remove the lines of the books that you do not want to download (or download them all if you wish).
 
@@ -51,15 +51,18 @@ It requires Python 3.6+ _on purpose_ (because I am using f-strings)
 `python3 springer_downloader.py`
 
 ### Options:
--d download_dir: Where to download the files (default to `$HOME`/SpringerBooks )
+-d download_dir: Where to download the files (defaults to `$HOME`/SpringerBooks )
+-c csv: CSV file from where to get the URL links to download (defaults to `list/list_ebooks.csv`)
+
+Both options are not required.
 
 ### Tested on:
 * Linux (Ubuntu 19.10, Python 3.7.5)
 
 ## To Do:
-* Add download_dir option
 * Multithreading
 * Automated Tests
+* Change prints to logs
 
 ## Other things
 
