@@ -1,5 +1,6 @@
 import time
 import os
+import threading
 
 import requests
 import bs4
@@ -11,9 +12,11 @@ EBOOK_CLASS='test-bookepub-link'
 
 class Downloader():
 
-    def __init__(self, download_dir, csv_file):
+    def __init__(self, download_dir, csv_file, use_threads, max_threads):
         self._download_dir = download_dir
         self._csv_file = csv_file
+        self._use_threads = use_threads
+        self._sem_limit_download = threading.Semaphore(max_threads)
 
         os.makedirs(self._download_dir , exist_ok=True)
     
@@ -83,11 +86,20 @@ class Downloader():
 
         start = time.perf_counter()
 
+        threads = []
         for url in df['OpenURL']:
-            file_nr += 1
-
-            print(f'Downloading file #{file_nr} of {url_size}')
-            self.parse_page(url)
+            if self._use_threads:
+                with self._sem_limit_download:  #limit the downloading threads
+                    t = threading.Thread(target=self.parse_page, args=(url,))
+                    t.start()
+                    threads.append(t)
+            else:
+                file_nr += 1
+                print(f'Downloading file #{file_nr} of {url_size}')
+                self.parse_page(url)
+        
+        for t in threads:
+            t.join()
         
         end = time.perf_counter()
         print(f"downloaded {url_size} files in {end - start} seconds")
