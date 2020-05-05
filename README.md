@@ -10,6 +10,9 @@ I searched if someone has already made it, but only found [one in R](https://tow
 
 So, here it is.
 
+This package downloads the Springer books from a CSV list into a specified directory.
+Each URL is an entry point for the book. Sometimes it have only a PDF, some times a PDF and an ePub. It tries to download both.
+
 ## Preparing the list of books to download
 
 In the springer_free_downloader/lists/ there are some files:
