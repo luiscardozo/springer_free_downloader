@@ -63,7 +63,7 @@ Both options are not required.
 * Linux (Ubuntu 19.10, Python 3.7.5)
 
 ## To Do:
-* Multithreading
+* ~~Multithreading~~
 * Automated Tests
 * Change prints to logs
 
