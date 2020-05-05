@@ -3,7 +3,8 @@ from argparse import ArgumentParser
 
 from springer_free_downloader.downloader import Downloader
 
-DEFAULT_CSV = os.path.dirname(__file__) + '/lists/list_ebooks.csv'
+THIS_DIR=os.path.dirname(os.path.abspath(__file__))
+DEFAULT_CSV = THIS_DIR + os.path.sep + 'lists/list_ebooks.csv'
 DEFAULT_DIR = os.path.expanduser('~') + os.path.sep + 'SpringerBooks'
 
 def build_argparser():
