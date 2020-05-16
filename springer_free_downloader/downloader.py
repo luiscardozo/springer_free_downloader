@@ -1,6 +1,7 @@
 import time
 import os
 import threading
+import logging
 
 import requests
 import bs4
@@ -9,6 +10,8 @@ import pandas as pd
 BASE_URL = 'https://link.springer.com'
 PDF_CLASS='test-bookpdf-link'
 EBOOK_CLASS='test-bookepub-link'
+
+logging.basicConfig(filename='logfile.log', level=logging.DEBUG)
 
 class Downloader():
 
@@ -25,7 +28,7 @@ class Downloader():
         Download specific book (PDF or ePub) in *dirname*
         """
         book_url = BASE_URL + url
-        print('Book URL: ', book_url)
+        logging.debug(f'Book URL: {book_url}')
 
         res = requests.get(book_url)
         res.raise_for_status()
@@ -38,7 +41,7 @@ class Downloader():
             # if not, name it as the URL
             file_name = os.path.join(self._download_dir, os.path.basename(url))
 
-        print(f"Saving to {file_name}")
+        logging.debug(f"Saving to {file_name}")
 
         with open(file_name,'wb') as book_file:
             for chunk in res.iter_content(100000):
@@ -57,7 +60,7 @@ class Downloader():
 
         downBook = soup.select(f'a.{klass}')
         if downBook == []:
-            print(f'It seems to be no {booktype} book to download')
+            logging.warning(f'It seems to be no {booktype} book to download')
         else:
             ref = downBook[0].get('href')
             self.download_book(ref)
@@ -95,11 +98,11 @@ class Downloader():
                     threads.append(t)
             else:
                 file_nr += 1
-                print(f'Downloading file #{file_nr} of {url_size}')
+                logging.info(f'Downloading file #{file_nr} of {url_size}')
                 self.parse_page(url)
         
         for t in threads:
             t.join()
         
         end = time.perf_counter()
-        print(f"downloaded {url_size} files in {end - start} seconds")
+        logging.info(f"downloaded {url_size} files in {end - start} seconds")
