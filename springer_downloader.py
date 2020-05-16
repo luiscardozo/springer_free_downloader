@@ -23,11 +23,18 @@ def build_argparser():
                         help="Download only with the main thread (slower)")
     parser.add_argument("-n", "--num_threads", required=False, type=int, default=DEFAULT_NR_THREADS,
                         help="Number of downloading threads")
+    parser.add_argument("-a", "--try_anyway", required=False, action="store_true",
+                        help="Ignore the captcha problem and try anyway.")
     return parser
 
 
 def main():
     args = build_argparser().parse_args()
+
+    if not args.try_anyway:
+        print("This software stopped working because Springer implemented Captchas.")
+        print("Please visit Springer site and download manually.")
+        exit(1)
 
     downloader = Downloader(args.download_dir, args.csv,
                             not args.disable_threads, args.num_threads)
