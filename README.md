@@ -13,6 +13,13 @@ So, here it is.
 This package downloads the Springer books from a CSV list into a specified directory.
 Each URL is an entry point for the book. Sometimes it have only a PDF, some times a PDF and an ePub. It tries to download both.
 
+## Update
+This software **does not work** after an update to the Springer servers where they ask for Captcha for download.
+
+I know that they want you to visit their page and I do not want to break their rules.
+
+So, for now, this is a dead end. It was good while it lasted.
+
 ## Preparing the list of books to download
 
 In the springer_free_downloader/lists/ there are some files:
